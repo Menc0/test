@@ -1,5 +1,6 @@
 package net.spring.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,14 +17,29 @@ import net.spring.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.cwh.springmvc.Annotation.FastJson;
+import com.cwh.springmvc.Annotation.MyErrorView;
 
 
 
+/**
+ * 
+ * @author  cwh
+  ___     _      _     _
+/\  _ `\ /\ \   /\ \ /\ \                       
+\ \ \/\_\\ \ \  \ \ \\ \ \___        
+ \ \ \/_/_\ \ \  _ \ \\ \  _ `\  
+  \ \ \L\ \\ \ \/ _`\ \\ \ \ \ \ 
+   \ \____/ \ \_ / \_ / \ \_\ \_\
+    \/___/   \/_/ \/_/   \/_/\/_/
+ *
+ */
 
 @Controller
 @RequestMapping("/user")
@@ -61,7 +77,8 @@ public class UserController {
 	  }
 	//用户列表
 	@RequestMapping("/userlist")
-	public ModelAndView userlist(@RequestParam("currentpage")int currentpage,HttpSession session){
+	@MyErrorView("error1")
+	public ModelAndView userlist(@RequestParam("currentpage")int currentpage,HttpSession session) throws Exception{
 		 List<User> userList = new ArrayList<User>();
 		 int pagesize = Pagesize.PAGESIZE;
 		 int pageCount = 0;
@@ -69,6 +86,7 @@ public class UserController {
 		 
 		 session.setAttribute("pageCount", pageCount);//传递分页数目
 		 userList = userservice.searchAllUser(currentpage,pagesize);
+		 //if(1 ==1)throw new Exception("this is a commonExceptionResolver");
 		//返回ModelAndView对象包含view名称和传递的对象
 		return new ModelAndView("UserManager","userlist",userList);
 	
@@ -125,14 +143,29 @@ public class UserController {
 			return "fail";
 		}
 	}
-	@RequestMapping("/getUserByName")
-	public String getUserByName(String name,HttpServletRequest request){
-		
+	@RequestMapping("/getUserByName/{name}")
+	public @ResponseBody User getUserByName(@PathVariable("name")String name,@FastJson User userform, HttpServletRequest request) throws IOException{
+		/*StringBuffer str = new StringBuffer(); 
+		try {
+			   BufferedInputStream in = new BufferedInputStream(request.getInputStream());
+			      int i;
+			      char c;
+			      while ((i=in.read())!=-1) {
+			      c=(char)i;
+			      str.append(c);
+			      }
+			     }catch (Exception ex) {
+			   ex.printStackTrace();
+			   }
+        JSONObject obj= JSONObject.fromObject(str);
+        System.out.println(obj.get("name"));*/
+		System.out.println(userform.getUsername());
+		name = userform.getUsername();
 		User user= userservice.getUserByName(name);
 		
-		request.setAttribute("userlist",user);
+		//request.setAttribute("userlist",user);
 		
-		return "UserManager";
+		return user;
 	}
 	
 }
