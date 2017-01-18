@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 @Target({java.lang.annotation.ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface FastJson {
+public @interface Json2Bean {
 
 }

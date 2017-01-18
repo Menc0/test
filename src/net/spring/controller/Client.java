@@ -42,6 +42,7 @@ public class Client {
 	          //httppost.addHeader("User-Agent", "imgfornote");  
 	          JSONObject obj = new JSONObject();
 	          obj.put("username", "cwh"); 
+	          obj.put("password", "password"); 
 	          httppost.setEntity(new StringEntity(obj.toString()));     
 	          HttpResponse response;  
 	          response = httpclient.execute(httppost);  

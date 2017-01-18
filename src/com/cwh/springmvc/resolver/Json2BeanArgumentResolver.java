@@ -1,7 +1,6 @@
 package com.cwh.springmvc.resolver;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,14 +12,14 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.cwh.springmvc.Annotation.FastJson;
+import com.cwh.springmvc.Annotation.Json2Bean;
 
-public class FastJsonArgumentResolver implements HandlerMethodArgumentResolver{
+public class Json2BeanArgumentResolver implements HandlerMethodArgumentResolver{
 
 	@Override
 	public boolean supportsParameter(MethodParameter paramMethodParameter) {
 		// 仅对有fastjson注解有效
-		return paramMethodParameter.hasParameterAnnotation(FastJson.class);
+		return paramMethodParameter.hasParameterAnnotation(Json2Bean.class);
 	}
 
 	@Override
@@ -33,16 +32,6 @@ public class FastJsonArgumentResolver implements HandlerMethodArgumentResolver{
         if (!request.getContentType().contains("application/json")) {
             return null;
         }
-
-        // 把reqeust的body读取到StringBuilder
-        /*BufferedReader reader = request.getReader();
-        StringBuilder sb = new StringBuilder();
-
-        char[] buf = new char[1024];
-        int rd;
-        while((rd = reader.read(buf)) != -1){
-            sb.append(buf, 0, rd);
-        }*/
         StringBuffer str = new StringBuffer(); 
 		try {
 			   BufferedInputStream in = new BufferedInputStream(request.getInputStream());
@@ -55,13 +44,7 @@ public class FastJsonArgumentResolver implements HandlerMethodArgumentResolver{
 			     }catch (Exception ex) {
 			   ex.printStackTrace();
 			   }
-        JSONObject obj= JSONObject.fromObject(str);
-        /*// 利用fastjson转换为对应的类型
-        if(JSONObjectWrapper.class.isAssignableFrom(paramMethodParameter.getParameterType())){
-            return new JSONObjectWrapper(JSON.parseObject(sb.toString()));
-        } else {
-            return JSON.parseObject(sb.toString(), paramMethodParameter.getParameterType());
-        }*/
+        JSONObject obj= JSONObject.fromObject(str.toString());
         return JSONObject.toBean(obj,paramMethodParameter.getParameterType());
     }
 

@@ -1,14 +1,18 @@
 package net.spring.controller;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+
 
 
 //import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import net.sf.json.JSONObject;
 import net.spring.common.Pagesize;
 import net.spring.model.User;
 import net.spring.service.UserService;
@@ -23,24 +27,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.cwh.springmvc.Annotation.FastJson;
+import com.cwh.springmvc.Annotation.Json2Bean;
 import com.cwh.springmvc.Annotation.MyErrorView;
-
 
 
 /**
  * 
  * @author  cwh
-  ___     _      _     _
-/\  _ `\ /\ \   /\ \ /\ \                       
-\ \ \/\_\\ \ \  \ \ \\ \ \___        
- \ \ \/_/_\ \ \  _ \ \\ \  _ `\  
-  \ \ \L\ \\ \ \/ _`\ \\ \ \ \ \ 
-   \ \____/ \ \_ / \_ / \ \_\ \_\
-    \/___/   \/_/ \/_/   \/_/\/_/
+  ___                  _
+/\  _ `\   _       _  /\ \                       
+\ \ \/\_\ /\ \    /\ \\ \ \___        
+ \ \ \/_/_\ \ \  _\ \ \\ \  _ `\  
+  \ \ \L\ \\ \ \/ _` \ \\ \ \ \ \ 
+   \ \____/ \ \_ /_ \_ / \ \_\ \_\
+    \/___/   \/_/  \/_/   \/_/\/_/
  *
  */
-
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -144,26 +146,12 @@ public class UserController {
 		}
 	}
 	@RequestMapping("/getUserByName/{name}")
-	public @ResponseBody User getUserByName(@PathVariable("name")String name,@FastJson User userform, HttpServletRequest request) throws IOException{
-		/*StringBuffer str = new StringBuffer(); 
-		try {
-			   BufferedInputStream in = new BufferedInputStream(request.getInputStream());
-			      int i;
-			      char c;
-			      while ((i=in.read())!=-1) {
-			      c=(char)i;
-			      str.append(c);
-			      }
-			     }catch (Exception ex) {
-			   ex.printStackTrace();
-			   }
-        JSONObject obj= JSONObject.fromObject(str);
-        System.out.println(obj.get("name"));*/
-		System.out.println(userform.getUsername());
+	public @ResponseBody User getUserByName(@PathVariable("name")String name,@Json2Bean User userform, HttpServletRequest request) throws IOException{
+		System.out.println(userform);
 		name = userform.getUsername();
 		User user= userservice.getUserByName(name);
 		
-		//request.setAttribute("userlist",user);
+		request.setAttribute("userlist",user);
 		
 		return user;
 	}

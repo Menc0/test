@@ -51,7 +51,7 @@
     <!-- JSR-303 support will be detected on classpath and enabled automatically -->
    <mvc:annotation-driven conversion-service="conversionService">
    		<mvc:argument-resolvers>
-	        <bean class="com.cwh.springmvc.resolver.FastJsonArgumentResolver"/>
+	        <bean class="com.cwh.springmvc.resolver.Json2BeanArgumentResolver"/>
 	    </mvc:argument-resolvers>
    </mvc:annotation-driven>
      
