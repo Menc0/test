@@ -146,9 +146,10 @@ public class UserController {
 		}
 	}
 	@RequestMapping("/getUserByName/{name}")
-	public @ResponseBody User getUserByName(@PathVariable("name")String name,@Json2Bean User userform, HttpServletRequest request) throws IOException{
-		System.out.println(userform);
-		name = userform.getUsername();
+	public @ResponseBody User getUserByName(@PathVariable("name")String name, HttpServletRequest request) throws IOException{
+		//@Json2Bean User userform,
+		//System.out.println(userform);
+		//name = userform.getUsername();
 		User user= userservice.getUserByName(name);
 		
 		request.setAttribute("userlist",user);
