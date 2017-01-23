@@ -156,5 +156,15 @@ public class UserController {
 		
 		return user;
 	}
+	@RequestMapping("/DeleteCache/{name}")
+	public @ResponseBody String DeleteCacheByName(@PathVariable("name")String name){
+		userservice.deleteCacheByName(name);
+		return "sucess";
+	}
+	@RequestMapping("/DeleteCache")
+	public @ResponseBody String DeleteAllCache(){
+		userservice.removeAllCache();
+		return "sucess";
+	}
 	
 }

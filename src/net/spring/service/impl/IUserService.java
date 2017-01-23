@@ -9,6 +9,7 @@ import net.spring.service.UserService;
 
 import org.springframework.beans.factory.BeanFactoryUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.ApplicationContext;
@@ -62,5 +63,15 @@ public class IUserService implements UserService{
 		// TODO Auto-generated method stub
 		return userdao.getUserByName(name);
 	}
+	@CacheEvict(value="myCache", key="'getUserByName'+#name")  
+    public void deleteCacheByName(String name){  
+        System.out.println("移除缓存中此用户号[" + name + "]的缓存");  
+    }  
+      
+    //allEntries为true表示清除value中的全部缓存,默认为false  
+    @CacheEvict(value="myCache", allEntries=true)  
+    public void removeAllCache(){  
+        System.out.println("移除缓存中的所有数据");  
+    }  
 	
 }

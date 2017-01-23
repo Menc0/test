@@ -16,4 +16,6 @@ public interface UserService {
 	public boolean updateUser(User user);
 	
 	public User getUserByName(String name);
+	void deleteCacheByName(String name);
+	public void removeAllCache();
 }
